@@ -10,6 +10,11 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface IApi {
+    String ZING_TYPE_ARTIST = "artist";
+    String ZING_TYPE_ALBUM = "album";
+    String ZING_TYPE_VIDEO = "video";
+    String ZING_TYPE_SONG = "song";
+
     @GET("http://www.nhaccuatui.com/ajax/search")
     Observable<NctSearchResult> nctSearch(@Query("q") String pQ);
 
