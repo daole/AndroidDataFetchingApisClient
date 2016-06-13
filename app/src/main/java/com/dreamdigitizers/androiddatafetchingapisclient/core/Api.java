@@ -5,6 +5,10 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.dreamdigitizers.androiddatafetchingapisclient.R;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.MusicNct;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.MusicZing;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.nct.NctSearchResult;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.zing.ZingSearchResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,11 +23,13 @@ import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Query;
+import rx.Observable;
 
-public class Api {
+public class Api implements IApi {
     private static final String TAG = Api.class.getSimpleName();
 
-    private static final String ERROR_MESSAGE__NOT_YET_INITIALIZED = "Api.initialize() has not yet called.";
+    private static final String ERROR_MESSAGE__NOT_YET_INITIALIZED = "Api has not yet been initialized. Please call Api.initialize(pContext) first.";
 
     private static final String API_USER_NAME = "androiddatafetchingapisclient";
     private static final String API_USER_PASSWORD = "androiddatafetchingapisclient";
@@ -40,7 +46,7 @@ public class Api {
         }
     }
 
-    public static Api getInstance() {
+    public static IApi getInstance() {
         if(Api.instance == null) {
             throw new IllegalStateException(Api.ERROR_MESSAGE__NOT_YET_INITIALIZED);
         }
@@ -95,6 +101,26 @@ public class Api {
                 .build();
 
         this.mApi = this.mRetrofit.create(IApi.class);
+    }
+
+    @Override
+    public Observable<NctSearchResult> nctSearch(@Query("q") String pQ) {
+        return this.mApi.nctSearch(pQ);
+    }
+
+    @Override
+    public Observable<ZingSearchResult> zingSearch(@Query("type") String pType, @Query("num") int pNum, @Query("query") String pQuery) {
+        return this.mApi.zingSearch(pType, pNum, pQuery);
+    }
+
+    @Override
+    public Observable<MusicNct> nctFetch(@Query("url") String pUrl, @Query("keyword") String pKeyword) {
+        return this.mApi.nctFetch(pUrl, pKeyword);
+    }
+
+    @Override
+    public Observable<MusicZing> zingFetch(@Query("name") String pName, @Query("artist") String pArtist, @Query("id") String pId) {
+        return this.mApi.zingFetch(pName, pArtist, pId);
     }
 
     /*
