@@ -1,5 +1,6 @@
-package com.dreamdigitizers.androiddatafetchingapisclient.models;
+package com.dreamdigitizers.androiddatafetchingapisclient.models.nct;
 
+import com.dreamdigitizers.androiddatafetchingapisclient.models.ModelBase;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

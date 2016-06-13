@@ -1,7 +1,7 @@
 package com.dreamdigitizers.androiddatafetchingapisclient.core;
 
-import com.dreamdigitizers.androiddatafetchingapisclient.models.MusicNct;
-import com.dreamdigitizers.androiddatafetchingapisclient.models.MusicZing;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.nct.MusicNct;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.zing.MusicZing;
 import com.dreamdigitizers.androiddatafetchingapisclient.models.nct.NctSearchResult;
 import com.dreamdigitizers.androiddatafetchingapisclient.models.zing.ZingSearchResult;
 
