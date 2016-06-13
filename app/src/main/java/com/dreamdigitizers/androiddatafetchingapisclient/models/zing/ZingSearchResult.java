@@ -13,7 +13,7 @@ public class ZingSearchResult extends ModelBase {
 
     @SerializedName("data")
     @Expose
-    private List<Data> mData;
+    private List<Data> mDataList;
 
     public boolean isResult() {
         return this.mResult;
@@ -23,11 +23,11 @@ public class ZingSearchResult extends ModelBase {
         this.mResult = pResult;
     }
 
-    public List<Data> getData() {
-        return this.mData;
+    public List<Data> getDataList() {
+        return this.mDataList;
     }
 
-    public void setData(List<Data> pData) {
-        this.mData = pData;
+    public void setDataList(List<Data> pDataList) {
+        this.mDataList = pDataList;
     }
 }
