@@ -4,7 +4,7 @@ import com.dreamdigitizers.androiddatafetchingapisclient.models.ModelBase;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Video extends ModelBase {
+public class ZingAlbum extends ModelBase {
     @SerializedName("artist")
     @Expose
     private String mArtist;

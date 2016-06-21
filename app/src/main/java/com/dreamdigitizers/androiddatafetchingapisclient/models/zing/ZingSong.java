@@ -4,10 +4,10 @@ import com.dreamdigitizers.androiddatafetchingapisclient.models.ModelBase;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Artist extends ModelBase {
-    @SerializedName("thumb")
+public class ZingSong extends ModelBase {
+    @SerializedName("artist")
     @Expose
-    private String mThumb;
+    private String mArtist;
 
     @SerializedName("name")
     @Expose
@@ -17,12 +17,12 @@ public class Artist extends ModelBase {
     @Expose
     private String mId;
 
-    public String getThumb() {
-        return this.mThumb;
+    public String getArtist() {
+        return this.mArtist;
     }
 
-    public void setThumb(String pThumb) {
-        this.mThumb = pThumb;
+    public void setArtist(String pArtist) {
+        this.mArtist = pArtist;
     }
 
     public String getName() {

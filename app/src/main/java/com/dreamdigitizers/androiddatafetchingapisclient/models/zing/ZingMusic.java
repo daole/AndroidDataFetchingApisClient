@@ -4,7 +4,7 @@ import com.dreamdigitizers.androiddatafetchingapisclient.models.ModelBase;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MusicZing extends ModelBase {
+public class ZingMusic extends ModelBase {
     @SerializedName("id")
     @Expose
     private String mId;

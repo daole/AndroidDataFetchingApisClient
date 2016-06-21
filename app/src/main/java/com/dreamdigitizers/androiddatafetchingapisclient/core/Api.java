@@ -5,8 +5,8 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.dreamdigitizers.androiddatafetchingapisclient.R;
-import com.dreamdigitizers.androiddatafetchingapisclient.models.nct.MusicNct;
-import com.dreamdigitizers.androiddatafetchingapisclient.models.zing.MusicZing;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.nct.NctMusic;
+import com.dreamdigitizers.androiddatafetchingapisclient.models.zing.ZingMusic;
 import com.dreamdigitizers.androiddatafetchingapisclient.models.nct.NctSearchResult;
 import com.dreamdigitizers.androiddatafetchingapisclient.models.zing.ZingSearchResult;
 import com.google.gson.Gson;
@@ -114,12 +114,12 @@ public class Api implements IApi {
     }
 
     @Override
-    public Observable<MusicNct> nctFetch(@Query("url") String pUrl, @Query("keyword") String pKeyword) {
+    public Observable<NctMusic> nctFetch(@Query("url") String pUrl, @Query("keyword") String pKeyword) {
         return this.mApi.nctFetch(pUrl, pKeyword);
     }
 
     @Override
-    public Observable<MusicZing> zingFetch(@Query("name") String pName, @Query("artist") String pArtist, @Query("id") String pId) {
+    public Observable<ZingMusic> zingFetch(@Query("name") String pName, @Query("artist") String pArtist, @Query("id") String pId) {
         return this.mApi.zingFetch(pName, pArtist, pId);
     }
 

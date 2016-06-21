@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Video extends ModelBase {
+public class NctPlaylist extends ModelBase {
     @SerializedName("name")
     @Expose
     private String mName;
@@ -17,7 +17,7 @@ public class Video extends ModelBase {
 
     @SerializedName("singer")
     @Expose
-    private List<Singer> mSingers;
+    private List<NctSinger> mNctSingers;
 
     @SerializedName("url")
     @Expose
@@ -39,12 +39,12 @@ public class Video extends ModelBase {
         this.mImg = pImg;
     }
 
-    public List<Singer> getSingers() {
-        return this.mSingers;
+    public List<NctSinger> getSingers() {
+        return this.mNctSingers;
     }
 
-    public void setSingers(List<Singer> pSingers) {
-        this.mSingers = pSingers;
+    public void setSingers(List<NctSinger> pNctSingers) {
+        this.mNctSingers = pNctSingers;
     }
 
     public String getUrl() {

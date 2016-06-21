@@ -10,7 +10,7 @@ public class NctSearchResult {
 
     @SerializedName("data")
     @Expose
-    private Data mData;
+    private NctData mNctData;
 
     @SerializedName("error_code")
     @Expose
@@ -24,12 +24,12 @@ public class NctSearchResult {
         this.mErrorMessage = pErrorMessage;
     }
 
-    public Data getData() {
-        return this.mData;
+    public NctData getData() {
+        return this.mNctData;
     }
 
-    public void setData(Data pData) {
-        this.mData = pData;
+    public void setData(NctData pNctData) {
+        this.mNctData = pNctData;
     }
 
     public int getErrorCode() {

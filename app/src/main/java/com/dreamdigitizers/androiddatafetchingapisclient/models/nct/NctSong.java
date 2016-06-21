@@ -4,18 +4,32 @@ import com.dreamdigitizers.androiddatafetchingapisclient.models.ModelBase;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Singer extends ModelBase {
+import java.util.List;
+
+public class NctSong extends ModelBase {
+    @SerializedName("id")
+    @Expose
+    private String mId;
+
     @SerializedName("name")
     @Expose
     private String mName;
 
-    @SerializedName("img")
+    @SerializedName("singer")
     @Expose
-    private String mImg;
+    private List<NctSinger> mNctSingers;
 
     @SerializedName("url")
     @Expose
     private String mUrl;
+
+    public String getId() {
+        return this.mId;
+    }
+
+    public void setId(String pId) {
+        this.mId = pId;
+    }
 
     public String getName() {
         return this.mName;
@@ -25,12 +39,12 @@ public class Singer extends ModelBase {
         this.mName = pName;
     }
 
-    public String getImg() {
-        return this.mImg;
+    public List<NctSinger> getSingers() {
+        return this.mNctSingers;
     }
 
-    public void setImg(String pImg) {
-        this.mImg = pImg;
+    public void setSingers(List<NctSinger> pNctSingers) {
+        this.mNctSingers = pNctSingers;
     }
 
     public String getUrl() {
