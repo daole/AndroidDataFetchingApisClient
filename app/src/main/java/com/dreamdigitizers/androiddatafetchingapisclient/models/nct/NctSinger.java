@@ -9,10 +9,6 @@ public class NctSinger extends ModelBase {
     @Expose
     private String mName;
 
-    @SerializedName("img")
-    @Expose
-    private String mImg;
-
     @SerializedName("url")
     @Expose
     private String mUrl;
@@ -23,14 +19,6 @@ public class NctSinger extends ModelBase {
 
     public void setName(String pName) {
         this.mName = pName;
-    }
-
-    public String getImg() {
-        return this.mImg;
-    }
-
-    public void setImg(String pImg) {
-        this.mImg = pImg;
     }
 
     public String getUrl() {
