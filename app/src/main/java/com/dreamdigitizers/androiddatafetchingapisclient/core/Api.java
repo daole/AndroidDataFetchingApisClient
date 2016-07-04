@@ -31,10 +31,6 @@ public class Api implements IApi {
 
     private static final String ERROR_MESSAGE__NOT_YET_INITIALIZED = "Api has not yet been initialized. Please call Api.initialize(pContext) first.";
 
-    private static final String API_USER_NAME = "androiddatafetchingapisclient";
-    private static final String API_USER_PASSWORD = "androiddatafetchingapisclient";
-    private static final String API_AUTHENTICATION = Api.API_USER_NAME + ":" + Api.API_USER_PASSWORD;
-
     private static Api instance;
 
     private IApi mApi;
@@ -59,14 +55,20 @@ public class Api implements IApi {
         }
     }
 
-    private Api(Context pContext) {
+    private Api(final Context pContext) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(pContext.getString(R.string.api_username));
+        stringBuilder.append(":");
+        stringBuilder.append(pContext.getString(R.string.api_password));
+        final String apiBasicAuthentication = stringBuilder.toString();
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain pChain) throws IOException {
                         Request request = pChain.request();
                         Request.Builder requestBuilder = request.newBuilder()
-                                .header("Authorization", "Basic " + Base64.encodeToString(Api.API_AUTHENTICATION.getBytes(), Base64.NO_WRAP))
+                                .header("Authorization", "Basic " + Base64.encodeToString(apiBasicAuthentication.getBytes(), Base64.NO_WRAP))
                                 .method(request.method(), request.body());
                         request = requestBuilder.build();
                         return pChain.proceed(request);
