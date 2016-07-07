@@ -3,4 +3,5 @@
     <string name="api_base_url">http://192.168.1.254/</string>
     <string name="api_username">datafetchingapisclient</string>
     <string name="api_password">datafetchingapisclient</string>
+    <string name="keystore_password">keystorepassword</string>
 </resources>

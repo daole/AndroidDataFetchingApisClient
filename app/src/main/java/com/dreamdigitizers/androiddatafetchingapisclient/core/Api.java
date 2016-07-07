@@ -13,6 +13,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManagerFactory;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -56,53 +67,80 @@ public class Api implements IApi {
     }
 
     private Api(final Context pContext) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(pContext.getString(R.string.api_username));
-        stringBuilder.append(":");
-        stringBuilder.append(pContext.getString(R.string.api_password));
-        final String apiBasicAuthentication = stringBuilder.toString();
+        try {
+            KeyStore keyStore = KeyStore.getInstance("BKS");
+            InputStream inputStream = pContext.getResources().openRawResource(R.raw.data_fetching_apis);
+            keyStore.load(inputStream, pContext.getString(R.string.keystore_password).toCharArray());
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain pChain) throws IOException {
-                        Request request = pChain.request();
-                        Request.Builder requestBuilder = request.newBuilder()
-                                .header("Authorization", "Basic " + Base64.encodeToString(apiBasicAuthentication.getBytes(), Base64.NO_WRAP))
-                                .method(request.method(), request.body());
-                        request = requestBuilder.build();
-                        return pChain.proceed(request);
-                    }
-                }).addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain pChain) throws IOException {
-                        Request request = pChain.request();
-                        HttpUrl.Builder builder = request.url().newBuilder();
-                        HttpUrl httpUrl = builder.build();
-                        Log.d(Api.TAG, request.method() + " " + httpUrl.url().toString());
-                        request = request.newBuilder().url(httpUrl).build();
-                        Response response = pChain.proceed(request);
-                        String bodyString = response.body().string();
-                        response = response.newBuilder()
-                                .body(ResponseBody.create(response.body().contentType(), bodyString))
-                                .build();
-                        Log.d(Api.TAG, bodyString);
-                        return response;
-                    }
-                }).build();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(pContext.getString(R.string.api_username));
+            stringBuilder.append(":");
+            stringBuilder.append(pContext.getString(R.string.api_password));
+            final String apiBasicAuthentication = stringBuilder.toString();
 
-        Gson gson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
-                .create();
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory())
+                    .hostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String pString, SSLSession pSslSession) {
+                            return true;
+                        }
+                    })
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Chain pChain) throws IOException {
+                            Request request = pChain.request();
+                            Request.Builder requestBuilder = request.newBuilder()
+                                    .header("Authorization", "Basic " + Base64.encodeToString(apiBasicAuthentication.getBytes(), Base64.NO_WRAP))
+                                    .method(request.method(), request.body());
+                            request = requestBuilder.build();
+                            return pChain.proceed(request);
+                        }
+                    }).addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Chain pChain) throws IOException {
+                            Request request = pChain.request();
+                            HttpUrl.Builder builder = request.url().newBuilder();
+                            HttpUrl httpUrl = builder.build();
+                            Log.d(Api.TAG, request.method() + " " + httpUrl.url().toString());
+                            request = request.newBuilder().url(httpUrl).build();
+                            Response response = pChain.proceed(request);
+                            String bodyString = response.body().string();
+                            response = response.newBuilder()
+                                    .body(ResponseBody.create(response.body().contentType(), bodyString))
+                                    .build();
+                            Log.d(Api.TAG, bodyString);
+                            return response;
+                        }
+                    }).build();
 
-        this.mRetrofit = new Retrofit.Builder()
-                .baseUrl(pContext.getString(R.string.api_base_url))
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
+            Gson gson = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .create();
 
-        this.mApi = this.mRetrofit.create(IApi.class);
+            this.mRetrofit = new Retrofit.Builder()
+                    .baseUrl(pContext.getString(R.string.api_base_url))
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
+
+            this.mApi = this.mRetrofit.create(IApi.class);
+        } catch (CertificateException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (KeyStoreException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (KeyManagementException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
